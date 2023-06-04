@@ -10,6 +10,7 @@ export class App extends Component {
     filter: '',
   };
 
+
   handleFilterChange = event => {
     this.setState({ filter: event.target.value });
   };
@@ -27,13 +28,28 @@ export class App extends Component {
     this.setState(prevState => ({
       contacts: [...prevState.contacts, newContact],
     }));
+    
   };
+
 
   handleDeleteContact = contactId => {
     this.setState(prevState => ({
       contacts: prevState.contacts.filter(contact => contact.id !== contactId),
     }));
   };
+
+  componentDidMount() {
+    const savedContacts = localStorage.getItem('contacts');
+    console.log(savedContacts);
+    if (savedContacts) {
+      this.setState({ contacts: JSON.parse(savedContacts)});
+    }
+  }
+  
+  componentDidUpdate() {
+    localStorage.setItem('contacts', JSON.stringify(this.state.contacts))
+  }
+
 
   render() {
     const { contacts, filter } = this.state;
